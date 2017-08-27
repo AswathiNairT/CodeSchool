@@ -1,0 +1,150 @@
+Git Pills:
+
+Inicializar Repositorio:					git init
+Añadir elemento:							git add [fileName/folder/pattern]
+Añadir todos:								git add ./--all
+Add Commit y comment: 						git commit -a -m "[Comment]"
+Añadir ficheros a un commit: 				git commit --amend -m "[newComment]"
+Deshacer un commit pero guarda cambios: 	git reset --soft HEAD
+Deshacer un commit: 						git reset --hard HEAD^
+Deshacer los dos ultimos commit: 			git reset --hard HEAD^^
+Borrar elemento:							git rm [fileName/folder/pattern]
+
+Añadir nuevo remotes: 						git remote add [name] [urlRemote]
+Borrar remote: 								git remote rm [name]
+Push Remote: 								git push -u [remoteName] [branch]
+Ver remotes: 								git remote -v
+
+Clonar Repo: 								git clone [urlRepository]
+Crear branch: 								git branch [branchName]
+Borrar branch: 								git branch -d [branchName] // local
+			   								git push origin --delete [branchName] //remote
+Situarse en branch: 						git checkout [branchName]
+Crear y situarse: 							git checkout -b [branchName]
+Mergear branch: 							git checkout [branchName] // usually master
+											git merge or git merge [fileName]
+Borrar branch: 								git branch -d [branchName]
+Ver log de commits: 						git log
+Actualizar Repositorio Local: 				git fetch 
+							  				git merge origin/master
+							  				git push
+Limpiar en Local remote borrados: 			git remote prune origin
+Ver remotes locales:						git remote show origin
+Push de rama local a rama remota: 			git push [remoteName] [localBranch:remoteBranch]
+
+Ver Tag:								    git tag
+Borrar Rama Remota: 						git push origin :[remoteBranchName]
+Obtener Tag:								git checkout [tagName]
+Añadir Tag:									git tag -a [tagName] -m "[comment]" 
+Push Tag:									git push --tags
+
+Incluir commits en rama: 					git fetch
+											git rebase
+	*Si hay conflictos resolvemos y			git rebase --continue
+
+Mejoras git log:							git config --global color.ui true
+Ver log en una linea						git log --pretty=oneline
+Formateo 									git log --pretty=format: "%h %ad- %s "
+											%ad author date
+											%an author name
+											%h SHA hash
+											%s subject
+											%d ref names
+Ver detalle modificaciones:					git log --oneline -p
+Ver inserciones Commit:						git log --online --stat
+Ver grafico ramas:							git log --oneline --graph
+Ver rango de log:							git log --until=1.minute.ago
+											git log --since=1.day.ago
+											git log --since=2017-01-01 --until=2017-08-31
+Ver diferencias ultimo commit:				git diff
+Ver diferencias sin commit:					git diff HEAD^ / HEAD^^/ HEAD~5
+Ver diferencias con un commit:				git diff [hashCommit]
+Ver diferencias entre Ramas:				git diff [branchName] [branchName]
+Ver cambios de un fichero:					git blame [fileName] --date short
+
+Quitar tracking de cambios:					git rm --cached [fileName/folder/pattern]
+						
+configurar nombre de usuario global:		git config --global user.name "[Name]"
+configurar nombre de email global:			git config --global user.email "[email]"
+configurar nombre de usuario para repo:		git config user.name "[Name]"
+configurar nombre de email para repo:		git config user.email "[email]"
+configurar log personal:					git config --global alias.mylog \"log --graph [morelogTags]"
+alias de comandos:							git config --global alias.[abreviatura] [gitCommand]
+Mac/Linux line conf:						git config --global core.autocrlf input
+Windows line conf:							git config --global core.autocrlf true
+
+git config help para más configs
+
+Rebase interactivo:							git rebase -i [HEAD~numberHeadsToRebase]
+Rebase comment:								change pick->reword [newComment]
+Rebase con separación de commit:			change pick-> edit
+Recommit 									git reset HEAD
+
+Squash merge commit:						git rebase -i [HEAD~numberHeadsToRebase] 
+											pick -> squash
+
+Guardar temporalmente un trabajo: 			git stash save
+Guardar temp. un trabajo con comment:		git stash save "[comment]"
+Recuperar un trabajo guardado temp:			git stash apply
+											git stash apply [stashName]
+Ver lista de stashes:						git stash 
+Descartar stash:							git stash drop
+											git stash drop [stashName]
+Recuperar y borrar:							git stash pop
+Recuperar stash sin staging:				git stash save --keep-index
+Guardar stash con untracked files:			git stash save --include-untracked
+Ver resumen de stash:						git stash list --stat
+Ver detalles stash:							git stash show [stashName]
+Ver diferencias stash:						git stash show --patch
+Si borramos ramas, recuperar stash:			git stash branch [branchName] [stashName]
+Borrar stashes:								git stash clear
+
+Crear  backup:								git clone [brachName] [backupName]
+Backup histórico con cambio:				git filter-branch --tree-filter "[commmand]" ex: "rm -f passwords.txt" 
+Backup TODO histórico con cambios:			git filter-branch --tree-filter "[commmand]" -- --all
+Backup histórico con cambio en un punto: 	git filter-branch --tree-filter "[commmand]" -- --HEAD~[headNumber]
+Forzar Backup histórico:					git filter-branch -f --tree-filter "[command]"	
+Excluir commit sin cambios Backup:			git filter-branch --tree-filter "[commmand]" --prune-empty -- --all
+Ver cambios del log:						git log --patch
+
+Ejecutar command fuera stagging area:		git filter-branch --index-filter "[command]"
+Ejecutar command en stagging area:			git filter-branch --index-filter "git [command] --cached --ignore-unmatch"
+Finalizar filter-branch:					git filter-branch -f --prune-empty -- --all
+
+Copiar un commit en branch:				    git checkout branch
+											git cherry-pick [commitId]
+Cambiar comment commit cherry-pick:			git cherry-pick --edit [commentId]
+Copiar varios commit en branch:				git cherry-pick --no-commit [commitId1 commitId2]
+Persistir cherry-pick:						git commit -m "[comment]"
+Track cherry pick commit:					git cherry-pick -x [commitId]
+Añadir quien hace cherry pick:				git cherry-pick --signoff [commitId]
+
+Añadir un submodule:						git submodule add [urlRepoSubmodule]:[urlRepo]
+Ver submodulos:								cat .gitmodules
+Submodue Init:								git submodule init
+Obtener actualizaciones submodule:			git submodule update
+*Hay que hacer push en el submodule[hijo] y en el repo del projecto[padre]
+
+Check modificaciones en el padre del hijo:	git push --recurse-submodules=check
+Auto push modificacionre hijo en padre:		git push --recurse-submodules=on-demand
+
+Ver log de recuperación:					git reflog
+Ver reflog en log:							git log --walk-reflogs					
+
+Vi Pills:
+
+:j down
+:k up
+ESC leave
+:wq save & quit
+:h left
+:l right
+:i insert
+:q! cancel & quit
+
+git filter-branch -f --prune-empty -- --all
+
+git filter-branch -f --tree-filter "rm -f master_username.txt"
+
+
+

@@ -1,0 +1,9 @@
+GIT CONFIG
+
+Ver opciones
+
+git config help
+
+Seteat nombre en commits
+
+git config --global user.name "[Nombre]"
